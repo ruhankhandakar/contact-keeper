@@ -1,6 +1,7 @@
 const express = require("express");
-
 const router = express.Router();
+
+const User = require("../models/User");
 
 /* 
 @route      POST api/users
@@ -8,9 +9,7 @@ const router = express.Router();
 @access     Public
 */
 router.post("/", (req, res) => {
-  res.json({
-    msg: "Register user"
-  });
+  res.json(req.body);
 });
 
 module.exports = router;

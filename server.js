@@ -5,6 +5,10 @@ const app = express();
 // Connect DB
 connectDB();
 
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.json({
     msg: "Welcome to the Contact Keeper API"
