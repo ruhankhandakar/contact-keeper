@@ -68,10 +68,36 @@ router.post(
 @desc       Update contact
 @access     Private
 */
-router.put("/:id", (req, res) => {
-  res.json({
-    msg: "Update contact"
-  });
+router.put("/:id", authMiddleware, async (req, res) => {
+  const { name, email, phone, type } = req.body;
+
+  // Build contact object
+  const contatFields = {};
+  if (name) contatFields.name = name;
+  if (email) contatFields.email = email;
+  if (phone) contatFields.phone = phone;
+  if (type) contatFields.type = type;
+
+  try {
+    let contact = await Contact.findById(req.params.id);
+    if (!contact) {
+      return res.status(404).json({ msg: "Contact Not Found" });
+    }
+    // User owns contact
+    if (contact.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    contact = await Contact.findByIdAndUpdate(
+      req.params.id,
+      { $set: contatFields },
+      { new: true }
+    );
+    res.json(contact);
+  } catch (error) {
+    console.log(error.messaage);
+    res.status(500).send("Server Error");
+  }
 });
 
 /* 
