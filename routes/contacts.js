@@ -105,10 +105,23 @@ router.put("/:id", authMiddleware, async (req, res) => {
 @desc       Delete contact
 @access     Private
 */
-router.delete("/:id", (req, res) => {
-  res.json({
-    msg: "Delete contact"
-  });
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    let contact = await Contact.findById(req.params.id);
+    if (!contact) {
+      return res.status(404).json({ msg: "Contact Not Found" });
+    }
+    // User owns contact
+    if (contact.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: "Not authorized" });
+    }
+
+    await Contact.findByIdAndRemove(req.params.id);
+    res.json({ msg: "Successfully Removed" });
+  } catch (error) {
+    console.log(error.messaage);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
