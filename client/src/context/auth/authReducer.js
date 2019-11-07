@@ -14,6 +14,7 @@ const authRedcuer = (state, action) => {
 
   switch (type) {
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       localStorage.setItem("token", payload);
       return {
         ...state,
@@ -21,8 +22,10 @@ const authRedcuer = (state, action) => {
         isAuthenticated: true,
         loading: false
       };
+
     case REGISTER_FAIL:
     case AUTH_ERROR:
+    case LOGIN_FAIL:
       localStorage.removeItem("token");
       return {
         ...state,
