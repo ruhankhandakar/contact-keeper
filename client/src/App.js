@@ -10,6 +10,13 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Alerts from "./components/layout/Alerts";
 
+import setAuthToken from "./utils/setAuthToken";
+
+const token = localStorage.getItem("token");
+if (token) {
+  setAuthToken(token);
+}
+
 const App = () => {
   return (
     <Fragment>
