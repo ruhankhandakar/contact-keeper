@@ -83,7 +83,10 @@ const AuthState = props => {
   };
 
   // Logout user
-  const logoutUser = () => "hi";
+  const logoutUser = () =>
+    dispatch({
+      type: LOGOUT
+    });
 
   // Clear Errors
   const clearErrors = () =>
